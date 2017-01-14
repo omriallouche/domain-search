@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="domainSearchApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>otDomainSearch</title>
+
+        <!--<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+        <!--<script src="node_modules/angular/angular.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+
+        <link href="assets/spinner.css" rel="stylesheet">
+        <script src="src/otDomainSearch.js"></script>
+        <script src="testApp.js"></script>
+
+    </head>
+    <body ng-controller="DomainSearchController">
+        <div class="container">
+            <h1>otDomainSearch</h1>
+            <br>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="singleDomain">Domain</label>
+                    <input type="text" class="form-control" id="singleDomain" placeholder="Domain" ng-model="domain">
+                </div>
+                
+                
+                <button class="btn btn-default" ot-check-domain="domain" result="domainCheckResult" is-checking="availabilityChecking">Check Domain Availability</button>
+                <button class="btn btn-default" ot-get-domain-suggestions="domain" result="suggestions" is-checking="suggestionsChecking">Get Domain Suggestions</button>
+            </form>
+            <br>
+            <div ng-if="availabilityChecking" class="loadersmall" style="margin:0 auto;"></div>
+            <div ng-show="domainCheckResult!=null">
+                <div class="alert alert-success" role="alert" ng-if="domainCheckResult">Domain Available</div>
+                <div class="alert alert-warning" role="alert" ng-if="!domainCheckResult">Domain Not Available</div>
+            </div>
+            
+            <div ng-if="suggestionsChecking" class="loadersmall" style="margin:0 auto;"></div>
+            <div ng-show="suggestions">
+                <div ng-repeat="suggestion in suggestions" class="alert" ng-class="{'alert-success':suggestion.free,'alert-warning':!suggestion.free}">
+                    Domain <b>{{suggestion.domain}}</b> is {{suggestion.free && 'Is Available' || 'Is Not Available'}}!
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
